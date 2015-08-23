@@ -1,0 +1,50 @@
+<head>
+  <title>softap-browser</title>
+</head>
+
+<body>
+  <h1>Hub Setup</h1>
+
+  {{> connectHub }}
+</body>
+
+<template name="connectHub">
+  {{#if connectionStepIs 'connectToHub'}}
+    <div>
+      First, connect your computer's WiFi to the Hub's network beacon.  It will be called something like "Photon-****".
+    </div>
+    <button data-locate-hub>Locate Hub</button>
+  {{else}}
+    {{#if connectionStepIs 'chooseSSID'}}
+      {{> scanHubAPs }}
+      {{#if selectedAP}}
+        {{> connectToAP ap=selectedAP }}
+      {{/if}}
+    {{/if}}
+  {{/if}}
+</template>
+
+<template name="scanHubAPs">
+  <button data-scan-aps>
+    {{#if scanningAPs}}
+      Scanning APs...
+    {{else}}
+      Re-scan APs
+    {{/if}}
+  </button>
+
+  {{#each aps}}
+    <div class="hub-ssid-option">
+      {{ssid}} {{securityType sec}}
+    </div>
+  {{/each}}
+</template>
+
+<template name="connectToAP">
+  <form id="connect-to-ssid">
+    {{#if ap.sec}}
+      <input id="ssid-pw" type="password"/>
+    {{/if}}
+    <button type="submit">Connect</button>
+  </form>
+</template>
