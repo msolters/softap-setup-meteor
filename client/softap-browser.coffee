@@ -18,7 +18,7 @@ Template.connectHub.events
       if dat.id?
         template.connectionStep.set 'chooseSSID'
       else
-        template.hubFound.set 'connectToHub'
+        template.connectionStep.set 'connectToHub'
   'click div.hub-ssid-option': (event, template) ->
     template.selectedAP.set @
 
