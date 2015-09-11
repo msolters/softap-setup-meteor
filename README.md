@@ -8,13 +8,13 @@ All required SoftAP functionality is inside [`client/lib/softap-browser.js`](htt
 
 Once the `softap-browser.js` file is included, it allows you to create a SoftAP object as follows:
 
-```
+```js
   var SAP = new SoftAPSetup(); 
 ```
 
 Then, you can use the `SAP` object to access the Particle SoftAP methods as documented on the official [softap-setup-js page's readme](https://github.com/spark/softap-setup-js/blob/master/README.md#usage).  For example, to acquire the JSON data containing the Photon's public key, one could then simply write:
 
-```
+```js
   SAP.deviceInfo( function callback(err, dat) {
     if (err) { throw err; }
     console.log("Device ID: %s, claimed: %s", dat.id, dat.claimed ? "yes" : "no");
@@ -34,24 +34,25 @@ I am assuming that most people are unfamiliar, so I will lay out the general log
 1.  The user changes the computer (or mobile device) so that it is connected to the Photon's AP (i.e. `Photon-ABCD` or whatever).  This is super important.  If the user doesn't hop to the Photon's AP, none of these methods will function.
 1.  When the user confirms (I use a "next" button) they are now on the Photon's AP, you can execute
 
-    ```
+    ```js
     SAP.deviceInfo( function(err, dat) {
       var photonID = dat.id;
     } );
     ```
     
     Inside the cb logic, make sure that there's no `err` and that `dat.id` isn't null.  Now you know the Photon's ID and more importantly, that it's reachable.
-1.  Next load the Photon's public key: call
+1.  Next load the Photon's public key:
 
-    ```
+    ```js
     SAP.publicKey( function(err, dat) {
       // cb logic
-    } );`
+    } );
+    ```
     
-    The only real cb logic here is making sure there's no `err`.
+    The only real cb logic here is making sure there's no `err`.  This may seem useless (we never explicitly use any return value), but it is an important step internally for the `SAP` machinery!!  Without it, we can't encrypt passwords and therefore cannot complete the last 2 steps of the setup.
 1.  Now the fun part!  We get a list of SSIDs that the Photon can detect by calling
 
-    ```
+    ```js
     var aps;
     SAP.scan( function(err, dat) {
       aps = dat.scans; // an array of ap objects
@@ -62,7 +63,7 @@ I am assuming that most people are unfamiliar, so I will lay out the general log
 1.  At this point we would render `aps` into some sort of a list of choices for the user.  In my example app here, I add lock icons and password textboxes for WiFi networks that have security.  I also sort AP choices by decreasing radio strength.  (Hint, you can get a dimensionless "% strength" from the RSSI by using `percentStrength = Math.min( Math.max(2 * (RSSI + 100), 0), 100);`.  At the end of the day, we need to know which element of `aps` corresponds to the AP the user chooses from the list, because we'll need the `channel` and `security` properties from that element.
 1.  Once an AP has been chosen, we construct a configuration object as follows.  Assuming `ap` is the element of `dat.scans` that the user wants to connect to:
 
-   ```
+   ```js
    ap = aps[0]; // or whatever the user picks
    var ap_config = {
     ssid: ap.ssid,
@@ -75,14 +76,14 @@ I am assuming that most people are unfamiliar, so I will lay out the general log
   Note how we find the actual security string associated with `ap.sec`, which is an int, by using the `SAP.securityLookup()` method.  The password should come from some password-type input.  It's useful to only show such an input if the user has selected an AP that has security to begin with.
 1.  Next we transmit our configuration settings to the Photon itself:
 
-   ```
+   ```js
    SAP.configure( ap_config, function(err, dat) {
     // make sure there are no errors
    } );
    ```
    
-1.  Provided that `.congigure()` returns no errors, we can can now connect:
-    ```
+1.  Provided that `.configure()` returns no errors, we can can now connect:
+    ```js
     SAP.connect( function(err, dat) {
       // check for errors
     } );
