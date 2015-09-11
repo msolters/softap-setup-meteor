@@ -90,3 +90,6 @@ I am assuming that most people are unfamiliar, so I will lay out the general log
     ```
 
 It's most useful to chain these methods, since they behave as callbacks -- for example, I call `SAP.connect()` inside the callback to `SAP.configure`, provided there were no errors.
+
+## Firmware Notes & Gotchas
+As of this writing, the Photon will not automatically *leave* listening mode when the `SAP.connect()` command is issued.  This is a [known bug and will (supposedly) be fixed](https://github.com/spark/firmware/issues/558) in the next firmware release.  It's super annoying and completely undermines the autonomy of the browser-based setup, but the work around is trivial: just hit the reset button.  (See the bug link for a code-based temporary solution as well, YMMV)  When the Photon reboots, you will see it *did* receive the credentials as it attempts to validate against the AP credentials you sent it during `SAP.configure( ap_config )`.
