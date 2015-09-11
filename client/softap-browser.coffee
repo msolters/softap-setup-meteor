@@ -1,74 +1,117 @@
-Template.connectHub.created = ->
+###
+#       Global template helpers
+###
+Template.registerHelper 'convertRSSItoPercent', (dBm) ->
+  Math.min( Math.max(2 * (dBm + 100), 0), 100)
+
+
+###
+#       Template.WiFiSetup
+###
+Template.WiFiSetup.created = ->
+  #
+  # ( ) Initialize basic SoftAP objects and methods.
+  #
+  delete window.sap if window.sap?
   window.sap = new SoftAPSetup()
-  @connectionStep = new ReactiveVar 'connectToHub'
-  @selectedAP = new ReactiveVar false
-
-Template.connectHub.helpers
-  connectionStepIs: (_connectionState) ->
-    return true if Template.instance().connectionStep.get() is _connectionState
-    return false
-  selectedAP: ->
-    Template.instance().selectedAP.get()
-
-Template.connectHub.events
-  'click button[data-locate-hub]': (event, template) ->
-    console.log("Obtaining device information...");
-    sap.deviceInfo (err, dat) ->
-      throw err if err
-      if dat.id?
-        template.connectionStep.set 'chooseSSID'
+  @connectionStep = new ReactiveVar 'connectToPhoton'
+  #
+  # ( ) Variables for tracking attempts to connect to the Photon
+  #
+  @locatingPhoton = new ReactiveVar false
+  @setPhotonConnectionState =
+    connected: =>
+      @locatingPhoton.set false
+      @connectionStep.set 'chooseSSID'
+      @scanAPs()
+    disconnected: =>
+      @locatingPhoton.set false
+      @connectionStep.set 'connectToPhoton'
+      Materialize.toast "We weren't able to find a Photon!  Make sure your computer's wireless network manager is properly connected to the Photon via WiFi.", 7000, "red"
+  #
+  # This method returns the deviceInfo of the Photon.
+  #
+  @retrieveDeviceInfo = =>
+    console.log "Retrieving device info..."
+    sap.deviceInfo (err, dat) =>
+      if !err
+        if dat.id?
+          console.log "Device info retrieved: #{dat}"
+          @retrieveKey()
+          return
       else
-        template.connectionStep.set 'connectToHub'
-  'click div.hub-ssid-option': (event, template) ->
-    template.selectedAP.set @
-
-
-###
-#     Template.scanHubAPs
-###
-Template.scanHubAPs.created = ->
-  @scanningAPs = new ReactiveVar true
+        @setPhotonConnectionState.disconnected()
+  @retrieveKey = =>
+    console.log "Retrieving public key..."
+    sap.publicKey (err, dat) =>
+      throw err if err
+      if !err
+        console.log "Key retrieved: #{dat}"
+        @setPhotonConnectionState.connected()
+      else
+        @setPhotonConnectionState.disconnected()
+  #
+  # ( ) Define SoftAP scanning methods and callbacks.
+  #
+  @scanningAPs = new ReactiveVar false
   @aps = new ReactiveVar []
+  @selectedAP = new ReactiveVar false
   @scanAPs = =>
+    if @scanningAPs.get()
+      Materialize.toast "The Photon is currently scanning for WiFi networks, please wait...", 3500, "teal"
+      return
+    @aps.set []
     @scanningAPs.set true
     console.log "Scanning APs..."
     sap.scan (err, dat) =>
       throw err if err
       console.log "Finished scanning: "
       console.log dat.scans
-      @retrieveKey(dat.scans) if dat.scans?
-  @retrieveKey = (aps=[]) =>
-    console.log "Retrieving public key..."
-    sap.publicKey (err, dat) =>
-      throw err if err
-      console.log "Key retrieved: #{dat}"
       @scanningAPs.set false
-      @aps.set aps
-  @scanAPs()
+      @aps.set _.sortBy dat.scans, (_ap) ->
+        -_ap.rssi
 
-Template.scanHubAPs.helpers
+Template.WiFiSetup.helpers
+  connectionStepIs: (_connectionState) ->
+    return true if Template.instance().connectionStep.get() is _connectionState
+    return false
+  # SoftAP photon location helpers.
+  locatingPhoton: ->
+    Template.instance().locatingPhoton.get()
+  # SoftAP scanning helpers.
   aps: ->
     Template.instance().aps.get()
+  selectedAP: ->
+    Template.instance().selectedAP.get()
   scanningAPs: ->
     Template.instance().scanningAPs.get()
   securityType: (securityType_dec) ->
     sap.securityLookup securityType_dec
+  isSelectedAP: (_ap) ->
+    return true if Template.instance().selectedAP.get() is _ap
+    return false
 
-Template.scanHubAPs.events
+Template.WiFiSetup.events
+  # SoftAP photon location events.
+  'click button[data-locate-photon]': (event, template) ->
+    template.locatingPhoton.set true
+    template.retrieveDeviceInfo()
+  # SoftAP scanning events.
   'click button[data-scan-aps]': (event, template) ->
     template.scanAPs()
-
-
-###
-#     Template.connectToAP
-###
-Template.connectToAP.events
+  'click button[data-deselect-ssid]': (event, template) ->
+    template.selectedAP.set false
+  'click div.photon-ssid-option': (event, template) ->
+    return unless template.selectedAP.get() isnt @
+    template.selectedAP.set @
+  # SoftAP connection events.
   'submit form#connect-to-ssid': (event, template) ->
+    _ap = template.selectedAP.get()
     connection_config =
-      ssid: template.data.ap.ssid
-      channel: template.data.ap.ch
-      security: sap.securityLookup template.data.ap.sec
-    if template.data.ap.sec
+      ssid: _ap.ssid
+      channel: _ap.ch
+      security: sap.securityLookup _ap.sec
+    if _ap.sec
       connection_config.password = template.find("input#ssid-pw").value
     else
       connection_config.password = ""
@@ -77,5 +120,16 @@ Template.connectToAP.events
       console.log 'configured!!!'
       sap.connect (err, dat) ->
         throw err if err
+        template.connectionStep.set 'pendingConnection'
         console.log 'connected!!!'
     return false
+  # SoftAP pendingConnection events.
+  'click button[data-restart-wifi-wizard]': (event, template) ->
+    template.locatingPhoton.set false
+    template.aps.set []
+    template.selectedAP.set false
+    template.scanningAPs.set false
+    template.connectionStep.set 'connectToPhoton'
+
+Template.WiFiSetup.destroyed = ->
+  delete window.sap if window.sap?

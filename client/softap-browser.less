@@ -1,0 +1,73 @@
+/* LESS declarations go here */
+
+/*  General Styling, Colour and Spacing */
+@darkGrey: #aaa;
+.container {
+  margin-top: 25px;
+  padding: 15px 15px 15px 35px;
+}
+ul li {
+  margin: 10px 0 10px 0;
+}
+.flex {
+  display: flex;
+}
+.flex-row {
+  flex-direction: row;
+}
+.flex-between {
+  align-content: space-between;
+  justify-content: space-between;
+}
+.flex-end {
+  align-content: flex-end;
+  justify-content: flex-end;
+}
+.dark-grey {
+  color: @darkGrey;
+}
+
+/*  Override Materialize Defaults */
+.toast {
+  height: auto !important;
+  line-height: 1.5em !important;
+  padding: 15px !important;
+}
+
+/*  Setup Wizard Styling  */
+#ssid-table .photon-ssid-option {
+  padding: 10px;
+  cursor: pointer;
+  align-items: center;
+}
+#ssid-table .photon-ssid-option:hover {
+  background-color: #eee;
+}
+i.ssid-security-icon {
+  color: @darkGrey;
+  font-size: 16px;
+  margin-left: 5px;
+}
+#ssid-pw {
+  height: 35px;
+  border: none;
+  outline: none;
+  padding: 0 0 0 10px;
+  font-size: 16px;
+  margin: 0;
+}
+#ssid-table-header {
+  border-bottom: 1px solid @darkGrey;
+  padding-bottom: 5px;
+  align-items: center;
+}
+#ssid-table-header-status {
+  padding: 5px;
+  color: @darkGrey;
+}
+#ssid-table-header button[data-scan-aps] {
+  margin-right: 0;
+}
+.ssid-footer {
+  padding-top: 5px;
+}
