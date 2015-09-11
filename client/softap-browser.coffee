@@ -105,7 +105,7 @@ Template.WiFiSetup.events
     return unless template.selectedAP.get() isnt @
     template.selectedAP.set @
   # SoftAP connection events.
-  'submit form#connect-to-ssid': (event, template) ->
+  'click button#data-connect-to-ap, submit form#connect-to-ssid': (event, template) ->
     _ap = template.selectedAP.get()
     connection_config =
       ssid: _ap.ssid
