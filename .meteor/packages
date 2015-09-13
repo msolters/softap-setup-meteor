@@ -11,4 +11,8 @@ coffeescript
 reactive-var
 materialize:materialize
 grove:less
-appcache
+arboleya:electrify
+meteorhacks:npm
+
+
+npm-container
