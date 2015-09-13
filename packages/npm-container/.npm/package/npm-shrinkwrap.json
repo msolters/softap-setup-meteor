@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "future": {
+      "version": "2.3.1"
+    },
+    "node-wifiscanner": {
+      "version": "0.2.1"
+    }
+  }
+}
