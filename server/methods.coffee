@@ -123,8 +123,8 @@ Meteor.methods
         resetWiFiChain = [ "startNM" ]
       when "win32"
         COMMANDS =
-          connect: ""#"netsh #{IFACE} connect ssid=YOURSSID name=PROFILENAME"
-        resetWiFiChain = []
+          disconnect: "netsh #{@IFACE} disconnect"#"netsh #{IFACE} connect ssid=YOURSSID name=PROFILENAME"
+        resetWiFiChain = [ "disconnect" ]
       when "darwin" # i.e., MacOS
         COMMANDS =
           enableAirport: "networksetup -setairportpower #{@IFACE} on"
