@@ -66,7 +66,7 @@ Template.WiFiSetup.created = ->
       throw err if err
       if !err
         console.log "Key retrieved: #{dat}"
-        Materialize.toast "Photon is now scanning for nearby WiFi networks..."
+        Materialize.toast "Photon is now scanning for nearby WiFi networks...", 4500
         @setPhotonConnectionState.connected()
       else
         @setPhotonConnectionState.disconnected()
