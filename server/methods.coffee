@@ -43,7 +43,7 @@ Meteor.methods
       when "darwin" # i.e., MacOS
         IFACE = "en1"
         COMMANDS =
-          connect: "networksetup -setairportnetwork #{IFACE} #{SSID}"
+          connect: "networksetup -setairportnetwork #{IFACE} \"#{ssid}\""
         connectToPhotonChain = [ "connect" ]
 
     for com in connectToPhotonChain
