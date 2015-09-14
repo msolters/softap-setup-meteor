@@ -44,8 +44,7 @@ Meteor.methods
         IFACE = "en1"
         COMMANDS =
           connect: "networksetup -setairportnetwork #{IFACE} #{SSID}"
-          enable: "networksetup -setairportpower #{IFACE} on"
-          disable: "networksetup -setairportpower #{IFACE} off"
+        connectToPhotonChain = [ "connect" ]
 
     for com in connectToPhotonChain
       fut = new Future()
@@ -86,9 +85,9 @@ Meteor.methods
       when "darwin" # i.e., MacOS
         IFACE = "en1"
         COMMANDS =
-          connect: "networksetup -setairportnetwork #{IFACE} #{SSID}"
-          enable: "networksetup -setairportpower #{IFACE} on"
-          disable: "networksetup -setairportpower #{IFACE} off"
+          enableAirport: "networksetup -setairportpower #{IFACE} on"
+          disableAirport: "networksetup -setairportpower #{IFACE} off"
+        resetWiFiChain = [ "enableAirport", "disableAirport" ]
 
     for com in resetWiFiChain
       fut = new Future()

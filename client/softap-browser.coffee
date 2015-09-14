@@ -136,6 +136,7 @@ Template.WiFiSetup.events
   # SoftAP pendingConnection events.
   'click button[data-restart-wifi-wizard]': (event, template) ->
     Meteor.call "resetWiFi", (err, resp) ->
+
     template.locatingPhoton.set false
     template.aps.set []
     template.selectedAP.set false
