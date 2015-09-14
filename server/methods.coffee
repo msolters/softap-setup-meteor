@@ -87,7 +87,7 @@ Meteor.methods
         COMMANDS =
           enableAirport: "networksetup -setairportpower #{IFACE} on"
           disableAirport: "networksetup -setairportpower #{IFACE} off"
-        resetWiFiChain = [ "enableAirport", "disableAirport" ]
+        resetWiFiChain = [ "disableAirport", "enableAirport" ]
 
     for com in resetWiFiChain
       fut = new Future()
