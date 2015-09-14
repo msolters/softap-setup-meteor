@@ -5,7 +5,13 @@
 #
 # (1) Establish network interface.
 #
-if process.platform is "darwin"
-  getIFACE = "route get 10.10.10.10"
-  child = exec getIFACE, (error, stdout, stderr) ->
-    @IFACE = stdout.trim().split(": ")[1]
+@PLATFORM = process.platform
+switch @PLATFORM
+  when "linux"
+    getIFACE = "ip link show | grep wlan | grep -i \"state UP\""
+    child = exec getIFACE, (error, stdout, stderr) =>
+      @IFACE = stdout.trim().split(": ")[1]
+  when "darwin"
+    getIFACE = "route get 10.10.10.10"
+    child = exec getIFACE, (error, stdout, stderr) =>
+      @IFACE = stdout.trim().split(": ")[1]

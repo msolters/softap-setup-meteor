@@ -26,14 +26,14 @@ Meteor.methods
     #
     # (1) Determine operating system
     #
-    switch process.platform
+    switch @PLATFORM
       when "linux"
         IFACE = "wlan0"
         COMMANDS =
           stopNM: "sudo service network-manager stop"
-          enableIFACE: "sudo ifconfig #{IFACE} up"
-          connect: "sudo iwconfig #{IFACE} essid \"#{ssid}\""
-          getIP: "sudo dhclient #{IFACE}"
+          enableIFACE: "sudo ifconfig #{@IFACE} up"
+          connect: "sudo iwconfig #{@IFACE} essid \"#{ssid}\""
+          getIP: "sudo dhclient #{@IFACE}"
           startNM: "sudo service network-manager start"
         connectToPhotonChain = [ "stopNM", "enableIFACE", "connect", "getIP"  ]
       when "win32"
@@ -71,9 +71,8 @@ Meteor.methods
     #
     # (1) Determine operating system
     #
-    switch process.platform
+    switch @PLATFORM
       when "linux"
-        IFACE = "wlan0"
         COMMANDS =
           startNM: "sudo service network-manager start"
         resetWiFiChain = [ "startNM" ]
