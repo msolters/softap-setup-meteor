@@ -23,7 +23,7 @@
     <div class="ssid-footer flex flex-row flex-end">
       <button data-locate-photon class="waves-effect waves-light btn blue">
         {{#if locatingPhoton}}
-          Connecting to Photon...
+          <i class="fa fa-fw fa-spinner fa-spin"></i> Connecting to Photon...
         {{else}}
           Next
         {{/if}}
@@ -43,7 +43,7 @@
           <div>
             {{#if scanningAPs}}
               <button data-scan-aps class="waves-effect waves-light btn grey">
-                Scanning APs...
+                <i class="fa fa-fw fa-spinner fa-spin"></i> Scanning APs...
               </button>
             {{else}}
               <button data-scan-aps class="waves-effect waves-light btn blue">
@@ -131,7 +131,7 @@
         </h5>
         {{#if scanningForDevices}}
           <button class="waves-effect waves-light btn disabled">
-            Looking for Photons...
+            <i class="fa fa-fw fa-spinner fa-spin"></i> Looking for Photons...
           </button>
         {{else}}
           <button data-scan-beacons class="waves-effect waves-light btn blue">

@@ -93,12 +93,13 @@ Template.WiFiSetup.helpers
 
 Template.WiFiSetup.events
   'click li[data-connect-to-photon]': (event, template) ->
+    template.locatingPhoton.set true
     Meteor.call "connectToAP", @ssid, (err, resp) ->
       if !err?
         if resp.success
-          template.locatingPhoton.set true
           template.retrieveDeviceInfo()
           return
+      template.locatingPhoton.set false
       Meteor.call "resetWiFi", (err, resp) ->
 
   # SoftAP photon location events.
@@ -136,7 +137,6 @@ Template.WiFiSetup.events
   # SoftAP pendingConnection events.
   'click button[data-restart-wifi-wizard]': (event, template) ->
     Meteor.call "resetWiFi", (err, resp) ->
-
     template.locatingPhoton.set false
     template.aps.set []
     template.selectedAP.set false
