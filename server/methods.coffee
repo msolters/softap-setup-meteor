@@ -118,9 +118,9 @@ Meteor.methods
           startNM: "sudo service network-manager start"
         resetWiFiChain = [ "startNM" ]
       when "win32"
-        IFACE = "wlan"
         COMMANDS =
-          connect: "netsh #{IFACE} connect ssid=YOURSSID name=PROFILENAME"
+          connect: ""#"netsh #{IFACE} connect ssid=YOURSSID name=PROFILENAME"
+        resetWiFiChain = []
       when "darwin" # i.e., MacOS
         COMMANDS =
           enableAirport: "networksetup -setairportpower #{@IFACE} on"

@@ -14,7 +14,7 @@ switch @PLATFORM
     child = exec getIFACE, (error, stdout, stderr) =>
       @IFACE = stdout.trim().split(": ")[1]
   when "win32"
-    @IFACE = "wlan"
+    @IFACE = "wlan" # default
   when "darwin"
     getIFACE = "route get 10.10.10.10 | grep interface"
     child = exec getIFACE, (error, stdout, stderr) =>

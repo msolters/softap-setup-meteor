@@ -3,6 +3,14 @@
 ###
 Template.registerHelper 'convertRSSItoPercent', (dBm) ->
   Math.min( Math.max(2 * (dBm + 100), 0), 100)
+@meteorMethodCB = (err, resp) ->
+  if err?
+    Materialize.toast resp.msg, 4500, "red"
+  else
+    if resp.success
+      Materialize.toast resp.msg, 4500
+    else
+      Materialize.toast resp.msg, 4500, "red"
 
 
 ###
@@ -37,6 +45,8 @@ Template.WiFiSetup.created = ->
       @locatingPhoton.set false
       @connectionStep.set 'connectToPhoton'
       Materialize.toast "We weren't able to find a Photon!  Make sure your computer's wireless network manager is properly connected to the Photon via WiFi.", 7000, "red"
+      Meteor.call "resetWiFi", (err, resp) ->
+        meteorMethodCB err, resp
   #
   # This method returns the deviceInfo of the Photon.
   #
@@ -56,6 +66,7 @@ Template.WiFiSetup.created = ->
       throw err if err
       if !err
         console.log "Key retrieved: #{dat}"
+        Materialize.toast "Photon is now scanning for nearby WiFi networks..."
         @setPhotonConnectionState.connected()
       else
         @setPhotonConnectionState.disconnected()
@@ -77,10 +88,15 @@ Template.WiFiSetup.created = ->
       console.log "Finished scanning: "
       console.log dat.scans
       @scanningAPs.set false
+      networkMsg = "#{dat.scans.length} WiFi network"
+      networkMsg += "s" unless dat.scans.length is 1
+      networkMsg += " found."
+      Materialize.toast networkMsg, 4500, "green"
       @aps.set _.sortBy dat.scans, (_ap) ->
         -_ap.rssi
 
 Template.WiFiSetup.helpers
+  # SoftAP photon location helpers.
   beacons: ->
     Template.instance().beacons.get()
   scanningForDevices: ->
@@ -88,7 +104,6 @@ Template.WiFiSetup.helpers
   connectionStepIs: (_connectionState) ->
     return true if Template.instance().connectionStep.get() is _connectionState
     return false
-  # SoftAP photon location helpers.
   locatingPhoton: ->
     Template.instance().locatingPhoton.get()
   # SoftAP scanning helpers.
@@ -109,13 +124,17 @@ Template.WiFiSetup.events
     template.scanForDevices()
   'click li[data-connect-to-photon]': (event, template) ->
     template.locatingPhoton.set true
+    Materialize.toast "Connecting to Photon WiFi Beacon...", 4500
     Meteor.call "connectToAP", @ssid, (err, resp) ->
+      meteorMethodCB err, resp
       if !err?
         if resp.success
+          Materialize.toast "Communicating with Photon...", 4500
           template.retrieveDeviceInfo()
           return
       template.locatingPhoton.set false
       Meteor.call "resetWiFi", (err, resp) ->
+        meteorMethodCB err, resp
 
   # SoftAP photon location events.
   'click button[data-locate-photon]': (event, template) ->
@@ -152,6 +171,7 @@ Template.WiFiSetup.events
   # SoftAP pendingConnection events.
   'click button[data-restart-wifi-wizard]': (event, template) ->
     Meteor.call "resetWiFi", (err, resp) ->
+      meteorMethodCB err, resp
     template.locatingPhoton.set false
     template.aps.set []
     template.selectedAP.set false
