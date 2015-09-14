@@ -22,7 +22,7 @@ Meteor.methods
         success: false
         msg: "We encountered an error while scanning for Photons: #{error}"
       }
-  connectToAP: (ssid) ->
+  connectToAP: (ssid) =>
     #
     # (1) Determine operating system
     #
@@ -41,9 +41,8 @@ Meteor.methods
         COMMANDS =
           connect: "netsh #{IFACE} connect ssid=YOURSSID name=PROFILENAME"
       when "darwin" # i.e., MacOS
-        IFACE = "en1"
         COMMANDS =
-          connect: "networksetup -setairportnetwork #{IFACE} \"#{ssid}\""
+          connect: "networksetup -setairportnetwork #{@IFACE} \"#{ssid}\""
         connectToPhotonChain = [ "connect" ]
 
     for com in connectToPhotonChain
@@ -68,7 +67,7 @@ Meteor.methods
       success: true
       msg: "Successfully connected to Photon!"
     }
-  resetWiFi: ->
+  resetWiFi: =>
     #
     # (1) Determine operating system
     #
@@ -83,10 +82,9 @@ Meteor.methods
         COMMANDS =
           connect: "netsh #{IFACE} connect ssid=YOURSSID name=PROFILENAME"
       when "darwin" # i.e., MacOS
-        IFACE = "en1"
         COMMANDS =
-          enableAirport: "networksetup -setairportpower #{IFACE} on"
-          disableAirport: "networksetup -setairportpower #{IFACE} off"
+          enableAirport: "networksetup -setairportpower #{@IFACE} on"
+          disableAirport: "networksetup -setairportpower #{@IFACE} off"
         resetWiFiChain = [ "disableAirport", "enableAirport" ]
 
     for com in resetWiFiChain
