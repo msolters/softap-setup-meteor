@@ -168,6 +168,7 @@ Template.WiFiSetup.events
   'click button[data-restart-wifi-wizard]': (event, template) ->
     Meteor.call "resetWiFi", (err, resp) ->
       meteorMethodCB err, resp
+    delete window.sap if window.sap?
     template.locatingPhoton.set false
     template.aps.set []
     template.selectedAP.set false
