@@ -12,6 +12,8 @@ switch @PLATFORM
     getIFACE = "ip link show | grep wlan | grep -i \"state UP\""
     child = exec getIFACE, (error, stdout, stderr) =>
       @IFACE = stdout.trim().split(": ")[1]
+  when "win32"
+    @IFACE = "wlan"
   when "darwin"
     getIFACE = "route get 10.10.10.10 | grep interface"
     child = exec getIFACE, (error, stdout, stderr) =>

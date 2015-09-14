@@ -17,17 +17,101 @@
         <li>
           Open up the developer console to follow along!
         </li>
-        {{> nearbyDevices }}
       </ul>
-    </div>
-    <div class="ssid-footer flex flex-row flex-end">
-      <button data-locate-photon class="waves-effect waves-light btn blue">
+      <ul class="collection with-header">
         {{#if locatingPhoton}}
-          <i class="fa fa-fw fa-spinner fa-spin"></i> Connecting to Photon...
+          <li class="collection-header">
+            <div class="flex flex-row flex-between flex-middle">
+              <div class="flex flex-row flex-middle">
+                <div class="preloader-wrapper small active">
+                  <div class="spinner-layer spinner-blue">
+                    <div class="circle-clipper left">
+                      <div class="circle"></div>
+                    </div><div class="gap-patch">
+                      <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                      <div class="circle"></div>
+                    </div>
+                  </div>
+
+                  <div class="spinner-layer spinner-red">
+                    <div class="circle-clipper left">
+                      <div class="circle"></div>
+                    </div><div class="gap-patch">
+                      <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                      <div class="circle"></div>
+                    </div>
+                  </div>
+
+                  <div class="spinner-layer spinner-yellow">
+                    <div class="circle-clipper left">
+                      <div class="circle"></div>
+                    </div><div class="gap-patch">
+                      <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                      <div class="circle"></div>
+                    </div>
+                  </div>
+
+                  <div class="spinner-layer spinner-green">
+                    <div class="circle-clipper left">
+                      <div class="circle"></div>
+                    </div><div class="gap-patch">
+                      <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                      <div class="circle"></div>
+                    </div>
+                  </div>
+                </div>
+                <h5 class="loading-header">Connecting to Photon...</h5>
+              </div>
+              <button data-restart-wifi-wizard type="button" class="waves-effect waves-light btn grey">Cancel</button>
+            </div>
+          </li>
         {{else}}
-          Next
+          <li class="collection-header">
+            <div class="flex flex-row flex-between flex-middle">
+              <h5>
+                Nearby Photons ({{beacons.length}})
+              </h5>
+              {{#if scanningForDevices}}
+                <button class="waves-effect waves-light btn disabled">
+                  <div class="flex flex-row flex-middle">
+                    <div class="preloader-wrapper active">
+                      <div class="spinner-layer spinner-green-only">
+                        <div class="circle-clipper left">
+                          <div class="circle"></div>
+                        </div><div class="gap-patch">
+                          <div class="circle"></div>
+                        </div><div class="circle-clipper right">
+                          <div class="circle"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>Looking for Photons...</div>
+                  </div>
+                </button>
+              {{else}}
+                <button data-scan-beacons class="waves-effect waves-light btn blue">
+                  Rescan for Photons
+                </button>
+              {{/if}}
+            </div>
+          </li>
+          {{#if beacons.length}}
+            {{#each beacons}}
+              <li data-connect-to-photon class="collection-item nearby-photon hoverable">
+                {{ssid}}
+              </li>
+            {{/each}}
+          {{else}}
+            <li class="collection-item grey-text text-darken-3">
+              Make sure your Photon is in WiFi setup mode (it will be blinking blue).  If it's not, hold the mode button for a few seconds until it begins to blink blue.
+            </li>
+          {{/if}}
         {{/if}}
-      </button>
+      </ul>
     </div>
   {{else}}
     {{#if connectionStepIs 'chooseSSID'}}
@@ -42,8 +126,21 @@
           </div>
           <div>
             {{#if scanningAPs}}
-              <button data-scan-aps class="waves-effect waves-light btn grey">
-                <i class="fa fa-fw fa-spinner fa-spin"></i> Scanning APs...
+              <button data-scan-aps class="waves-effect waves-light btn disabled">
+                <div class="flex flex-row flex-middle">
+                  <div class="preloader-wrapper active">
+                    <div class="spinner-layer spinner-green-only">
+                      <div class="circle-clipper left">
+                        <div class="circle"></div>
+                      </div><div class="gap-patch">
+                        <div class="circle"></div>
+                      </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>Scanning WiFi Networks...</div>
+                </div>
               </button>
             {{else}}
               <button data-scan-aps class="waves-effect waves-light btn blue">
@@ -120,36 +217,4 @@
       {{/if}}
     {{/if}}
   {{/if}}
-</template>
-
-<template name="nearbyDevices">
-  <ul class="collection with-header">
-    <li class="collection-header">
-      <div class="flex flex-row flex-between flex-middle">
-        <h5>
-          Nearby Photons ({{beacons.length}})
-        </h5>
-        {{#if scanningForDevices}}
-          <button class="waves-effect waves-light btn disabled">
-            <i class="fa fa-fw fa-spinner fa-spin"></i> Looking for Photons...
-          </button>
-        {{else}}
-          <button data-scan-beacons class="waves-effect waves-light btn blue">
-            Rescan for Photons
-          </button>
-        {{/if}}
-      </div>
-    </li>
-    {{#if beacons.length}}
-      {{#each beacons}}
-        <li data-connect-to-photon class="collection-item nearby-photon hoverable">
-          {{ssid}}
-        </li>
-      {{/each}}
-    {{else}}
-      <li class="collection-item grey-text text-darken-3">
-        Make sure your Photon is in WiFi setup mode (it will be blinking blue).  If it's not, hold the mode button for a few seconds until it begins to blink blue.
-      </li>
-    {{/if}}
-  </ul>
 </template>

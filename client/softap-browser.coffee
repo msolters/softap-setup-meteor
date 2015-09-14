@@ -9,6 +9,15 @@ Template.registerHelper 'convertRSSItoPercent', (dBm) ->
 #       Template.WiFiSetup
 ###
 Template.WiFiSetup.created = ->
+  @beacons = new ReactiveVar 0
+  @scanningForDevices = new ReactiveVar false
+  @scanForDevices = =>
+    @scanningForDevices.set true
+    Meteor.call "scanWiFi", (err, resp) =>
+      @scanningForDevices.set false
+      if resp.success
+        @beacons.set resp.networks
+  @scanForDevices()
   #
   # ( ) Initialize basic SoftAP objects and methods.
   #
@@ -72,6 +81,10 @@ Template.WiFiSetup.created = ->
         -_ap.rssi
 
 Template.WiFiSetup.helpers
+  beacons: ->
+    Template.instance().beacons.get()
+  scanningForDevices: ->
+    Template.instance().scanningForDevices.get()
   connectionStepIs: (_connectionState) ->
     return true if Template.instance().connectionStep.get() is _connectionState
     return false
@@ -92,6 +105,8 @@ Template.WiFiSetup.helpers
     return false
 
 Template.WiFiSetup.events
+  'click button[data-scan-beacons]': (event, template) ->
+    template.scanForDevices()
   'click li[data-connect-to-photon]': (event, template) ->
     template.locatingPhoton.set true
     Meteor.call "connectToAP", @ssid, (err, resp) ->
@@ -145,28 +160,3 @@ Template.WiFiSetup.events
 
 Template.WiFiSetup.destroyed = ->
   delete window.sap if window.sap?
-
-
-###
-#     Template.nearbyDevices
-###
-Template.nearbyDevices.created = ->
-  @beacons = new ReactiveVar 0
-  @scanningForDevices = new ReactiveVar false
-  @scanForDevices = =>
-    @scanningForDevices.set true
-    Meteor.call "scanWiFi", (err, resp) =>
-      @scanningForDevices.set false
-      if resp.success
-        @beacons.set resp.networks
-  @scanForDevices()
-
-Template.nearbyDevices.helpers
-  beacons: ->
-    Template.instance().beacons.get()
-  scanningForDevices: ->
-    Template.instance().scanningForDevices.get()
-
-Template.nearbyDevices.events
-  "click button[data-scan-beacons]": (event, template) ->
-    template.scanForDevices()

@@ -37,9 +37,8 @@ Meteor.methods
           startNM: "sudo service network-manager start"
         connectToPhotonChain = [ "stopNM", "enableIFACE", "connect", "getIP"  ]
       when "win32"
-        IFACE = "wlan"
         COMMANDS =
-          connect: "netsh #{IFACE} connect ssid=YOURSSID name=PROFILENAME"
+          connect: "netsh #{@IFACE} connect ssid=\"#{ssid}\" name=Photon-SoftAP"
       when "darwin" # i.e., MacOS
         COMMANDS =
           connect: "networksetup -setairportnetwork #{@IFACE} \"#{ssid}\""
