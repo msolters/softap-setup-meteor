@@ -43,7 +43,7 @@ Meteor.methods
         ssid_hex = ""
         for i in [0..ssid.length-1]
           ssid_hex += ssid.charCodeAt(i).toString(16)
-        data.charCodeAt(i).toString(16)
+        ssid.charCodeAt(i).toString(16)
         xmlContent = "<?xml version=\"1.0\"?>
                       <WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\">
                         <name>Photon-SoftAP</name>
@@ -72,7 +72,11 @@ Meteor.methods
             fut.return false
           else
             fut.return true
-        return unless fut.wait()
+        if !fut.wait()
+          return {
+            success: false
+            msg: "Encountered an error connecting to Photon: #{error}"
+          }
         COMMANDS =
           loadProfile: "netsh #{@IFACE} add profile filename=\"Photon-SoftAP.xml\""
           connect: "netsh #{@IFACE} connect ssid=\"#{ssid}\" name=\"Photon-SoftAP\""
