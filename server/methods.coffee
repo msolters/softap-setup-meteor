@@ -88,9 +88,10 @@ Meteor.methods
 
     for com in connectToPhotonChain
       fut = new Future()
+      console.log "Executing #{COMMANDS[com]}"
       child = exec COMMANDS[com], (error, stdout, stderr) ->
-        #console.log "stdout: #{stdout}"
-        #console.log "stderr: #{stderr}"
+        console.log "stdout: #{stdout}"
+        console.log "stderr: #{stderr}"
         if error?
           console.log "exec error: #{error}"
           fut.return {
@@ -100,10 +101,13 @@ Meteor.methods
         else
           fut.return {
             success: true
-            msg: "Successfully connected to Photon!"
+            msg: "Successfully ran #{COMMANDS[com]}"
           }
-      if !fut.wait().success
-        return fut.wait()
+      result = fut.wait()
+      if !result.success
+        return result
+      else
+        console.log result.msg
     return {
       success: true
       msg: "Successfully connected to Photon!"

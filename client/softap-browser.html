@@ -127,20 +127,7 @@
           <div>
             {{#if scanningAPs}}
               <button data-scan-aps class="waves-effect waves-light btn disabled">
-                <div class="flex flex-row flex-middle">
-                  <div class="preloader-wrapper active">
-                    <div class="spinner-layer spinner-green-only">
-                      <div class="circle-clipper left">
-                        <div class="circle"></div>
-                      </div><div class="gap-patch">
-                        <div class="circle"></div>
-                      </div><div class="circle-clipper right">
-                        <div class="circle"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div>Scanning WiFi Networks...</div>
-                </div>
+                Scanning WiFi Networks...
               </button>
             {{else}}
               <button data-scan-aps class="waves-effect waves-light btn blue">
@@ -151,7 +138,7 @@
         </div>
         {{#if scanningAPs}}
           <div class="center">
-            <div class="preloader-wrapper large active">
+            <div id="ssid-preloader" class="preloader-wrapper large active">
               <div class="spinner-layer spinner-blue">
                 <div class="circle-clipper left">
                   <div class="circle"></div>

@@ -29,8 +29,6 @@ Template.WiFiSetup.created = ->
   #
   # ( ) Initialize basic SoftAP objects and methods.
   #
-  delete window.sap if window.sap?
-  window.sap = new SoftAPSetup()
   @connectionStep = new ReactiveVar 'connectToPhoton'
   #
   # ( ) Variables for tracking attempts to connect to the Photon
@@ -120,6 +118,7 @@ Template.WiFiSetup.helpers
     return false
 
 Template.WiFiSetup.events
+  # SoftAP photon location events.
   'click button[data-scan-beacons]': (event, template) ->
     template.scanForDevices()
   'click li[data-connect-to-photon]': (event, template) ->
@@ -130,16 +129,13 @@ Template.WiFiSetup.events
       if !err?
         if resp.success
           Materialize.toast "Communicating with Photon...", 4500
+          delete window.sap if window.sap?
+          window.sap = new SoftAPSetup()
           template.retrieveDeviceInfo()
           return
       template.locatingPhoton.set false
       Meteor.call "resetWiFi", (err, resp) ->
         meteorMethodCB err, resp
-
-  # SoftAP photon location events.
-  'click button[data-locate-photon]': (event, template) ->
-    template.locatingPhoton.set true
-    template.retrieveDeviceInfo()
   # SoftAP scanning events.
   'click button[data-scan-aps]': (event, template) ->
     template.scanAPs()
