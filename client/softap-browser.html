@@ -149,38 +149,84 @@
             {{/if}}
           </div>
         </div>
-        {{#each aps}}
-          {{#if isSelectedAP this}}
-            <form id="connect-to-ssid">
-              <div class="photon-ssid-option flex flex-row flex-between z-depth-1">
-                <div>
-                  {{#if sec}}
-                    <input id="ssid-pw" type="password" placeholder="WiFi Password" autofocus="true"/>
-                  {{else}}
-                    {{ssid}}
-                  {{/if}}
-                </div>
-                <div class="flex flex-row">
-                  <button data-connect-to-ap type="submit" class="waves-effect waves-light btn blue">Connect  <i class="fa fa-fw fa-chevron-right"></i></button>
+        {{#if scanningAPs}}
+          <div class="center">
+            <div class="preloader-wrapper large active">
+              <div class="spinner-layer spinner-blue">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div><div class="gap-patch">
+                  <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                  <div class="circle"></div>
                 </div>
               </div>
-            </form>
-          {{else}}
-            <div class="photon-ssid-option flex flex-row flex-between">
-              <div class="flex flex-row flex-middle">
-                <div>
-                  {{ssid}}
+
+              <div class="spinner-layer spinner-red">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div><div class="gap-patch">
+                  <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                  <div class="circle"></div>
                 </div>
-                {{#if sec}}
-                  <i class="ssid-security-icon fa fa-fw fa-lock"></i>
-                {{/if}}
               </div>
-              <div class="dark-grey">
-                ({{convertRSSItoPercent rssi}}%)
+
+              <div class="spinner-layer spinner-yellow">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div><div class="gap-patch">
+                  <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+
+              <div class="spinner-layer spinner-green">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div><div class="gap-patch">
+                  <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
               </div>
             </div>
-          {{/if}}
-        {{/each}}
+          </div>
+        {{else}}
+          {{#each aps}}
+            {{#if isSelectedAP this}}
+              <form id="connect-to-ssid">
+                <div class="photon-ssid-option flex flex-row flex-between z-depth-1">
+                  <div>
+                    {{#if sec}}
+                      <input id="ssid-pw" type="password" placeholder="WiFi Password" autofocus="true"/>
+                    {{else}}
+                      {{ssid}}
+                    {{/if}}
+                  </div>
+                  <div class="flex flex-row">
+                    <button data-connect-to-ap type="submit" class="waves-effect waves-light btn blue">Connect  <i class="fa fa-fw fa-chevron-right"></i></button>
+                  </div>
+                </div>
+              </form>
+            {{else}}
+              <div class="photon-ssid-option flex flex-row flex-between">
+                <div class="flex flex-row flex-middle">
+                  <div>
+                    {{ssid}}
+                  </div>
+                  {{#if sec}}
+                    <i class="ssid-security-icon fa fa-fw fa-lock"></i>
+                  {{/if}}
+                </div>
+                <div class="dark-grey">
+                  ({{convertRSSItoPercent rssi}}%)
+                </div>
+              </div>
+            {{/if}}
+          {{/each}}
+        {{/if}}
       </div>
       <div class="ssid-footer flex flex-row flex-end">
         <button data-restart-wifi-wizard type="button" class="waves-effect waves-light btn grey">Cancel</button>
