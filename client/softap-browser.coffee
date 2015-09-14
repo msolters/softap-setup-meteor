@@ -131,7 +131,9 @@ Template.WiFiSetup.events
           Materialize.toast "Communicating with Photon...", 4500
           delete window.sap if window.sap?
           window.sap = new SoftAPSetup()
-          template.retrieveDeviceInfo()
+          Meteor.setTimeout =>
+            template.retrieveDeviceInfo()
+          , 3000
           return
       template.locatingPhoton.set false
       Meteor.call "resetWiFi", (err, resp) ->
