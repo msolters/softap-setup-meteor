@@ -9,7 +9,7 @@ autopublish
 insecure
 coffeescript
 reactive-var
-materialize:materialize
+materialize:materialize@=0.97.0
 grove:less
 meteorhacks:npm
 
