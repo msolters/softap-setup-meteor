@@ -42,7 +42,7 @@ Meteor.methods
           connect: "netsh #{IFACE} connect ssid=YOURSSID name=PROFILENAME"
       when "darwin" # i.e., MacOS
         COMMANDS =
-          connect: "/usr/sbin/networksetup -setairportnetwork #{@IFACE} \"#{ssid}\""
+          connect: "networksetup -setairportnetwork #{@IFACE} \"#{ssid}\""
         connectToPhotonChain = [ "connect" ]
 
     for com in connectToPhotonChain
@@ -82,8 +82,8 @@ Meteor.methods
           connect: "netsh #{IFACE} connect ssid=YOURSSID name=PROFILENAME"
       when "darwin" # i.e., MacOS
         COMMANDS =
-          enableAirport: "/usr/sbin/networksetup -setairportpower #{@IFACE} on"
-          disableAirport: "/usr/sbin/networksetup -setairportpower #{@IFACE} off"
+          enableAirport: "networksetup -setairportpower #{@IFACE} on"
+          disableAirport: "networksetup -setairportpower #{@IFACE} off"
         resetWiFiChain = [ "disableAirport", "enableAirport" ]
 
     for com in resetWiFiChain

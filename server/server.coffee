@@ -5,6 +5,7 @@
 #
 # (1) Establish network interface.
 #
+
 @PLATFORM = process.platform
 switch @PLATFORM
   when "linux"
@@ -12,6 +13,6 @@ switch @PLATFORM
     child = exec getIFACE, (error, stdout, stderr) =>
       @IFACE = stdout.trim().split(": ")[1]
   when "darwin"
-    getIFACE = "route get 10.10.10.10"
+    getIFACE = "route get 10.10.10.10 | grep interface"
     child = exec getIFACE, (error, stdout, stderr) =>
       @IFACE = stdout.trim().split(": ")[1]
