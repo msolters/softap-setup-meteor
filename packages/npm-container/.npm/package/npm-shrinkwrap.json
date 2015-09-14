@@ -3,8 +3,23 @@
     "future": {
       "version": "2.3.1"
     },
-    "node-wifiscanner": {
-      "version": "0.2.1"
+    "node-wifiscanner2": {
+      "version": "1.1.0",
+      "dependencies": {
+        "os-locale": {
+          "version": "1.4.0",
+          "dependencies": {
+            "lcid": {
+              "version": "1.0.0",
+              "dependencies": {
+                "invert-kv": {
+                  "version": "1.0.0"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

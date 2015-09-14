@@ -9,9 +9,11 @@ Meteor.methods
             msg: "We encountered an error while scanning for Photons: #{error}"
           }
         else
+          console.log data
+          deviceFilter = new RegExp /Photon/
           fut.return {
             success: true
-            networks: data
+            networks: _.filter data, (n) -> deviceFilter.test n.ssid
             msg: "Nearby devices successfully scanned."
           }
       fut.wait()
@@ -20,3 +22,4 @@ Meteor.methods
         success: false
         msg: "We encountered an error while scanning for Photons: #{error}"
       }
+  connectToAP: (network) ->

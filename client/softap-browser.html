@@ -1,5 +1,5 @@
 <body>
-  <div class="container z-depth-2">
+  <div class="container">
     {{> WiFiSetup }}
   </div>
 </body>
@@ -8,24 +8,16 @@
   <h4>Photon SoftAP <span class="dark-grey">Browser-Based Setup</span></h4>
   {{#if connectionStepIs 'connectToPhoton'}}
     <div>
-      <h5>What Is This?</h5>
-      <p>
+      <blockquote>
+        <h5>What Is This?</h5>
         This is a client-side only JavaScript implementation of the SoftAP setup procedure for the <a href="https://www.particle.io/">Particle Photon</a>.  It uses the <a href="https://github.com/brewnerd/softap-setup-js">amazing browserified SoftAP code</a> by <a href="https://github.com/brewnerd">@brewnerd</a>.  In this example, I used the browserify tool to generate a single JavaScript file that contains all required SoftAP methods, as per <a href="https://github.com/brewnerd/softap-setup-js#running-in-the-browser">@brewnerd's documentation instructions</a>.  Using this file, I can create a <pre class="center">var SAP = new SoftAPSetup();</pre> object, which contains all the necessary methods for connecting, scanning and configuring the Photon's WiFi settings.  For more information, <a href="https://github.com/msolters/softap-setup-meteor">see the repo</a>.
-      </p>
+      </blockquote>
       <h5>Instructions</h5>
       <ul>
         <li>
-          Make sure your Photon is in WiFi setup mode (it will be blinking blue).  If it's not, hold the mode button for a few seconds until it begins to blink blue.
-        </li>
-        <li>
-          Next, look for a WiFi network starting with "Photon-****" in your computer or mobile phone's network manager, and connect to it.
-        </li>
-        <li>
-          When your computer or mobile device is connected to your Photon's AP, click NEXT.
-        </li>
-        <li>
           Open up the developer console to follow along!
         </li>
+        {{> nearbyDevices }}
       </ul>
     </div>
     <div class="ssid-footer flex flex-row flex-end">
@@ -128,4 +120,36 @@
       {{/if}}
     {{/if}}
   {{/if}}
+</template>
+
+<template name="nearbyDevices">
+  <ul class="collection with-header">
+    <li class="collection-header">
+      <div class="flex flex-row flex-between flex-middle">
+        <h5>
+          Nearby Photons ({{beacons.length}})
+        </h5>
+        {{#if scanningForDevices}}
+          <button class="waves-effect waves-light btn disabled">
+            Looking for Photons...
+          </button>
+        {{else}}
+          <button data-scan-beacons class="waves-effect waves-light btn blue">
+            Rescan for Photons
+          </button>
+        {{/if}}
+      </div>
+    </li>
+    {{#if beacons.length}}
+      {{#each beacons}}
+        <li class="collection-item">
+          {{ssid}}
+        </li>
+      {{/each}}
+    {{else}}
+      <li class="collection-item grey-text text-darken-3">
+        Make sure your Photon is in WiFi setup mode (it will be blinking blue).  If it's not, hold the mode button for a few seconds until it begins to blink blue.
+      </li>
+    {{/if}}
+  </ul>
 </template>
