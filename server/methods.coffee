@@ -37,8 +37,46 @@ Meteor.methods
           startNM: "sudo service network-manager start"
         connectToPhotonChain = [ "stopNM", "enableIFACE", "connect", "getIP"  ]
       when "win32"
+        #
+        # (1) First we must create a network profile XML file!
+        #
+        ssid_hex = ""
+        for i in [0..ssid.length-1]
+          ssid_hex += ssid.charCodeAt(i).toString(16)
+        data.charCodeAt(i).toString(16)
+        xmlContent = "<?xml version=\"1.0\"?>
+                      <WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\">
+                        <name>Photon-SoftAP</name>
+                        <SSIDConfig>
+                          <SSID>
+                            <hex>#{ssid_hex}</hex>
+                            <name>#{ssid}</name>
+                          </SSID>
+                        </SSIDConfig>
+                        <connectionType>ESS</connectionType>
+                        <connectionMode>manual</connectionMode>
+                        <MSM>
+                          <security>
+                            <authEncryption>
+                              <authentication>open</authentication>
+                              <encryption>none</encryption>
+                              <useOneX>false</useOneX>
+                            </authEncryption>
+                          </security>
+                        </MSM>
+                      </WLANProfile>"
+        fut = new Future()
+        fs.writeFile "Photon-SoftAP.xml", xmlContent, (err) ->
+          if err?
+            console.error err
+            fut.return false
+          else
+            fut.return true
+        return unless fut.wait()
         COMMANDS =
-          connect: "netsh #{@IFACE} connect ssid=\"#{ssid}\" name=Photon-SoftAP"
+          loadProfile: "netsh #{@IFACE} add profile filename=\"Photon-SoftAP.xml\""
+          connect: "netsh #{@IFACE} connect ssid=\"#{ssid}\" name=\"Photon-SoftAP\""
+        connectToPhotonChain = [ "loadProfile", "connect" ]
       when "darwin" # i.e., MacOS
         COMMANDS =
           connect: "networksetup -setairportnetwork #{@IFACE} \"#{ssid}\""
