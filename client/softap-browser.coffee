@@ -21,10 +21,12 @@ Template.WiFiSetup.created = ->
   @scanningForDevices = new ReactiveVar false
   @scanForDevices = =>
     @scanningForDevices.set true
-    Meteor.call "scanWiFi", (err, resp) =>
+    Meteor.call "scanForWiFi", (err, resp) =>
       @scanningForDevices.set false
       if resp.success
-        @beacons.set resp.networks
+        deviceFilter = new RegExp /Photon/
+        @beacons.set _.filter resp.networks, (n) ->
+          deviceFilter.test n.ssid
   @scanForDevices()
   #
   # ( ) Initialize basic SoftAP objects and methods.
@@ -124,16 +126,14 @@ Template.WiFiSetup.events
   'click li[data-connect-to-photon]': (event, template) ->
     template.locatingPhoton.set true
     Materialize.toast "Connecting to Photon WiFi Beacon...", 4500
-    Meteor.call "connectToAP", @ssid, (err, resp) ->
+    Meteor.call "connectToAP", {ssid: @ssid}, (err, resp) ->
       meteorMethodCB err, resp
       if !err?
         if resp.success
           Materialize.toast "Communicating with Photon...", 4500
           delete window.sap if window.sap?
           window.sap = new SoftAPSetup()
-          Meteor.setTimeout =>
-            template.retrieveDeviceInfo()
-          , 3000
+          template.retrieveDeviceInfo()
           return
       template.locatingPhoton.set false
       Meteor.call "resetWiFi", (err, resp) ->
