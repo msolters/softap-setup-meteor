@@ -1,0 +1,92 @@
+<template name="nativeSetup">
+  {{#if setupStepIs 'connectToPhoton'}}
+    <p>
+      <div class="row flow-text">
+        This part of the app is intended to be run if you have downloaded and are running it as a <a href="https://github.com/msolters/softap-setup-meteor/blob/master/README.md#deploy-as-a-stand-alone-application">standalone app</a>.
+      </div>
+      <div class="row">
+        Native WiFi features will <i>not</i> function unless the app is run locally.
+      </div>
+    </p>
+    <ul class="collection with-header">
+      {{#if attemptingToConnectToPhoton}}
+        <li class="collection-header">
+          <div class="flex flex-row flex-between flex-middle">
+            <div class="flex flex-row flex-middle">
+              {{> multiColourLoader}}
+              <h5 class="loading-header">Connecting to Photon...</h5>
+            </div>
+            <button data-cancel-setup data-reset-wifi type="button" class="waves-effect waves-light btn grey">Cancel</button>
+          </div>
+        </li>
+      {{else}}
+        <li class="collection-header">
+          <div class="flex flex-row flex-between flex-middle">
+            <h5>
+              Nearby Photons ({{nearbyPhotons.length}})
+            </h5>
+            {{#if scanningForPhotons}}
+              <button class="waves-effect waves-light btn disabled">
+                <div class="flex flex-row flex-middle">
+                  {{> multiColourLoader}}
+                  <div>Looking for Photons...</div>
+                </div>
+              </button>
+            {{else}}
+              <button data-scan-for-photons class="waves-effect waves-light btn blue">
+                Rescan for Photons
+              </button>
+            {{/if}}
+          </div>
+        </li>
+        {{#if nearbyPhotons.length}}
+          {{#each nearbyPhotons}}
+            <li data-connect-to-photon class="collection-item nearby-photon hoverable">
+              {{ssid}}
+            </li>
+          {{/each}}
+        {{else}}
+          <li class="collection-item grey-text text-darken-3">
+            <div class="row">
+              <div class="col s1 center">
+                <i class="fa fa-fw fa-question-circle green-text"></i>
+              </div>
+              <div class="col s11">
+                Make sure your Photon is in WiFi setup mode (it will be blinking blue).  If it's not, hold the mode button for a few seconds until it begins to blink blue.
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s1 center">
+                <i class="fa fa-fw fa-exclamation-circle red-text"></i>
+              </div>
+              <div class="col s11">
+                If your Photon is <i>definitely</i> blinking blue but still not showing up, try turning your computer's WiFi off and then on again.
+              </div>
+            </div>
+          </li>
+        {{/if}}
+      {{/if}}
+    </ul>
+  {{/if}}
+
+  {{#if setupStepIs 'chooseSSID'}}
+    {{> chooseSSID }}
+    <div class="setup-footer flex flex-row flex-end">
+      <button data-cancel-setup data-reset-wifi type="button" class="waves-effect waves-light btn grey">
+        Cancel
+      </button>
+    </div>
+  {{/if}}
+
+  {{#if setupStepIs 'finished'}}
+    {{> finished }}
+    <div class="setup-footer flex flex-row flex-end">
+      <button data-cancel-setup class="waves-effect waves-light btn blue">
+        Start Over
+      </button>
+      <button data-close-app class="waves-effect waves-light btn green">
+        Done
+      </button>
+    </div>
+  {{/if}}
+</template>

@@ -1,253 +1,220 @@
 <body>
   <div class="container">
-    {{> WiFiSetup }}
+    <h4>Photon SoftAP Setup</h4>
+    <ul class="collapsible popout" data-collapsible="accordion">
+      <li>
+        <div class="collapsible-header active">
+          <i class="fa fa-fw fa-cloud"></i>Browser-Based
+        </div>
+        <div class="collapsible-body">
+          {{> browserSetup}}
+        </div>
+      </li>
+      <li>
+        <div class="collapsible-header">
+          <i class="fa fa-fw fa-download"></i>Native Application
+        </div>
+        <div class="collapsible-body">
+          {{> nativeSetup}}
+        </div>
+      </li>
+    </ul>
   </div>
 </body>
 
-<template name="WiFiSetup">
-  <h4>Photon SoftAP <span class="dark-grey">Browser-Based Setup</span></h4>
-  {{#if connectionStepIs 'connectToPhoton'}}
-    <div>
-      <blockquote>
-        <h5>What Is This?</h5>
-        This is a client-side only JavaScript implementation of the SoftAP setup procedure for the <a href="https://www.particle.io/">Particle Photon</a>.  It uses the <a href="https://github.com/brewnerd/softap-setup-js">amazing browserified SoftAP code</a> by <a href="https://github.com/brewnerd">@brewnerd</a>.  In this example, I used the browserify tool to generate a single JavaScript file that contains all required SoftAP methods, as per <a href="https://github.com/brewnerd/softap-setup-js#running-in-the-browser">@brewnerd's documentation instructions</a>.  Using this file, I can create a <pre class="center">var SAP = new SoftAPSetup();</pre> object, which contains all the necessary methods for connecting, scanning and configuring the Photon's WiFi settings.  For more information, <a href="https://github.com/msolters/softap-setup-meteor">see the repo</a>.
-      </blockquote>
-      <h5>Instructions</h5>
-      <ul>
-        <li>
-          Open up the developer console to follow along!
-        </li>
-      </ul>
-      <ul class="collection with-header">
-        {{#if locatingPhoton}}
-          <li class="collection-header">
-            <div class="flex flex-row flex-between flex-middle">
-              <div class="flex flex-row flex-middle">
-                <div class="preloader-wrapper small active">
-                  <div class="spinner-layer spinner-blue">
-                    <div class="circle-clipper left">
-                      <div class="circle"></div>
-                    </div><div class="gap-patch">
-                      <div class="circle"></div>
-                    </div><div class="circle-clipper right">
-                      <div class="circle"></div>
-                    </div>
-                  </div>
-
-                  <div class="spinner-layer spinner-red">
-                    <div class="circle-clipper left">
-                      <div class="circle"></div>
-                    </div><div class="gap-patch">
-                      <div class="circle"></div>
-                    </div><div class="circle-clipper right">
-                      <div class="circle"></div>
-                    </div>
-                  </div>
-
-                  <div class="spinner-layer spinner-yellow">
-                    <div class="circle-clipper left">
-                      <div class="circle"></div>
-                    </div><div class="gap-patch">
-                      <div class="circle"></div>
-                    </div><div class="circle-clipper right">
-                      <div class="circle"></div>
-                    </div>
-                  </div>
-
-                  <div class="spinner-layer spinner-green">
-                    <div class="circle-clipper left">
-                      <div class="circle"></div>
-                    </div><div class="gap-patch">
-                      <div class="circle"></div>
-                    </div><div class="circle-clipper right">
-                      <div class="circle"></div>
-                    </div>
-                  </div>
-                </div>
-                <h5 class="loading-header">Connecting to Photon...</h5>
-              </div>
-              <button data-restart-wifi-wizard type="button" class="waves-effect waves-light btn grey">Cancel</button>
-            </div>
-          </li>
-        {{else}}
-          <li class="collection-header">
-            <div class="flex flex-row flex-between flex-middle">
-              <h5>
-                Nearby Photons ({{beacons.length}})
-              </h5>
-              {{#if scanningForDevices}}
-                <button class="waves-effect waves-light btn disabled">
-                  <div class="flex flex-row flex-middle">
-                    <div class="preloader-wrapper active">
-                      <div class="spinner-layer spinner-green-only">
-                        <div class="circle-clipper left">
-                          <div class="circle"></div>
-                        </div><div class="gap-patch">
-                          <div class="circle"></div>
-                        </div><div class="circle-clipper right">
-                          <div class="circle"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>Looking for Photons...</div>
-                  </div>
-                </button>
-              {{else}}
-                <button data-scan-beacons class="waves-effect waves-light btn blue">
-                  Rescan for Photons
-                </button>
-              {{/if}}
-            </div>
-          </li>
-          {{#if beacons.length}}
-            {{#each beacons}}
-              <li data-connect-to-photon class="collection-item nearby-photon hoverable">
-                {{ssid}}
-              </li>
-            {{/each}}
-          {{else}}
-            <li class="collection-item grey-text text-darken-3">
-              Make sure your Photon is in WiFi setup mode (it will be blinking blue).  If it's not, hold the mode button for a few seconds until it begins to blink blue.
-            </li>
-          {{/if}}
-        {{/if}}
-      </ul>
-    </div>
-  {{else}}
-    {{#if connectionStepIs 'chooseSSID'}}
-      <div id="ssid-table">
-        <div id="ssid-table-header" class="flex flex-row flex-between">
-          <div id="ssid-table-header-status">
-            {{#if scanningAPs}}
-              Please wait...
-            {{else}}
-              {{aps.length}} WiFi Networks Found
-            {{/if}}
-          </div>
-          <div>
-            {{#if scanningAPs}}
-              <button data-scan-aps class="waves-effect waves-light btn disabled">
-                Scanning WiFi Networks...
-              </button>
-            {{else}}
-              <button data-scan-aps class="waves-effect waves-light btn blue">
-                Re-scan APs
-              </button>
-            {{/if}}
-          </div>
+<template name="browserSetup">
+  {{#if setupStepIs 'connectToPhoton'}}
+    <p>
+      <div class="row flow-text">
+        To set up your Photon from the browser, first find and connect to a WiFi network that has "Photon-" in it, and then hit next!
+      </div>
+      <div class="row">
+        <div class="col s1 center">
+          <i class="fa fa-fw fa-question-circle green-text small"></i>
         </div>
-        {{#if scanningAPs}}
-          <div class="center">
-            <div id="ssid-preloader" class="preloader-wrapper large active">
-              <div class="spinner-layer spinner-blue">
-                <div class="circle-clipper left">
-                  <div class="circle"></div>
-                </div><div class="gap-patch">
-                  <div class="circle"></div>
-                </div><div class="circle-clipper right">
-                  <div class="circle"></div>
-                </div>
-              </div>
-
-              <div class="spinner-layer spinner-red">
-                <div class="circle-clipper left">
-                  <div class="circle"></div>
-                </div><div class="gap-patch">
-                  <div class="circle"></div>
-                </div><div class="circle-clipper right">
-                  <div class="circle"></div>
-                </div>
-              </div>
-
-              <div class="spinner-layer spinner-yellow">
-                <div class="circle-clipper left">
-                  <div class="circle"></div>
-                </div><div class="gap-patch">
-                  <div class="circle"></div>
-                </div><div class="circle-clipper right">
-                  <div class="circle"></div>
-                </div>
-              </div>
-
-              <div class="spinner-layer spinner-green">
-                <div class="circle-clipper left">
-                  <div class="circle"></div>
-                </div><div class="gap-patch">
-                  <div class="circle"></div>
-                </div><div class="circle-clipper right">
-                  <div class="circle"></div>
-                </div>
-              </div>
-            </div>
+        <div class="col s11">
+          Make sure your Photon is in WiFi setup mode (it will be blinking blue).  If it's not, hold the mode button for a few seconds until it begins to blink blue.
+        </div>
+      </div>
+      <div class="row">
+        Look for a WiFi network like this...
+      </div>
+      <blockquote>
+        <pre>
+          Photon-****
+        </pre>
+      </blockquote>
+      <div class="row">
+        <div class="col s1 center">
+          <i class="fa fa-fw fa-exclamation-circle red-text small"></i>
+        </div>
+        <div class="col s11">
+          If your Photon is <i>definitely</i> blinking blue but still not showing up in your computer or smart phone's WiFi list, try turning your WiFi off and then on again.
+        </div>
+      </div>
+    </p>
+    <div class="setup-footer flex flex-row flex-end">
+      {{#if attemptingToConnectToPhoton}}
+        <button data-cancel-setup type="button" class="waves-effect waves-light btn grey">
+          Cancel
+        </button>
+        <button class="waves-effect waves-light btn disabled">
+          <div class="flex flex-row flex-middle">
+            {{> multiColourLoader}}
+            <div>Connecting to Photon...</div>
           </div>
+        </button>
+      {{else}}
+        <button data-connect-to-photon type="button" class="waves-effect waves-light btn blue">
+          Next
+        </button>
+      {{/if}}
+    </div>
+  {{/if}}
+
+  {{#if setupStepIs 'chooseSSID'}}
+    {{> chooseSSID }}
+    <div class="setup-footer flex flex-row flex-end">
+      <button data-cancel-setup type="button" class="waves-effect waves-light btn grey">
+        Cancel
+      </button>
+    </div>
+  {{/if}}
+
+  {{#if setupStepIs 'finished'}}
+    {{> finished }}
+    <div class="setup-footer flex flex-row flex-end">
+      <button data-cancel-setup class="waves-effect waves-light btn blue">
+        Start Over
+      </button>
+    </div>
+  {{/if}}
+</template>
+
+<template name="chooseSSID">
+  <div id="ssid-table">
+    <div id="ssid-table-header" class="flex flex-row flex-between">
+      <div id="ssid-table-header-status">
+        {{#if scanningAPsFromPhoton}}
+          Please wait...
         {{else}}
-          {{#each aps}}
-            {{#if isSelectedAP this}}
-              <form id="connect-to-ssid">
-                <div class="photon-ssid-option flex flex-row flex-between z-depth-1">
-                  <div>
-                    {{#if sec}}
-                      <input id="ssid-pw" type="password" placeholder="WiFi Password" autofocus="true"/>
-                    {{else}}
-                      {{ssid}}
-                    {{/if}}
-                  </div>
-                  <div class="flex flex-row">
-                    <button data-connect-to-ap type="submit" class="waves-effect waves-light btn blue">Connect  <i class="fa fa-fw fa-chevron-right"></i></button>
-                  </div>
-                </div>
-              </form>
-            {{else}}
-              <div class="photon-ssid-option flex flex-row flex-between">
-                <div class="flex flex-row flex-middle">
-                  <div>
-                    {{ssid}}
-                  </div>
-                  {{#if sec}}
-                    <i class="ssid-security-icon fa fa-fw fa-lock"></i>
-                  {{/if}}
-                </div>
-                <div class="dark-grey">
-                  ({{convertRSSItoPercent rssi}}%)
-                </div>
-              </div>
-            {{/if}}
-          {{/each}}
+          {{APs.length}} WiFi Networks Found
         {{/if}}
       </div>
-      <div class="ssid-footer flex flex-row flex-end">
-        <button data-restart-wifi-wizard type="button" class="waves-effect waves-light btn grey">Cancel</button>
+      <div>
+        {{#if scanningAPsFromPhoton}}
+          <button class="waves-effect waves-light btn disabled">
+            Scanning WiFi Networks...
+          </button>
+        {{else}}
+          <button data-scan-aps-from-photon class="waves-effect waves-light btn blue">
+            Re-scan APs
+          </button>
+        {{/if}}
+      </div>
+    </div>
+    {{#if scanningAPsFromPhoton}}
+      <div class="center ssid-loader">
+        {{> multiColourLoader size="large"}}
       </div>
     {{else}}
-      {{#if connectionStepIs 'pendingConnection'}}
-        <h2>
-          The WiFi information has been sent to the Photon.
-        </h2>
-        <div>
-          <ul>
-            <li>
-              If your Photon is running the latest firmware (>= 0.4.5), it will now try to connect.  If your firmware is not up-to-date, it will probably still be in beacon mode, and you must now press "reset".  This is a <a href="">known bug</a> that is already fixed, so keep your firmware up-to-date!
-            </li>
-            <li>
-              The LED should now turn green, and eventually blue.
-            </li>
-            <li>
-              If the LED continues to flash green for a minute or more, it means the password was entered incorrectly.  You can use the button below to restart the process.  (You may have to put the Photon back into beacon mode by holding "mode."  Ideally, this would be handled by application code being fired from some more accessible input like a "setup button" or voice control.)
-            </li>
-            <li>
-              If your machine has not already reverted back to your regular WiFi network, connect to it now to get back online.
-            </li>
-            <li>
-              For more on how this browser-based tool works, <a href="https://github.com/msolters/softap-setup-meteor">check the documentation here.</a>
-            </li>
-          </ul>
-        </div>
-        <div class="ssid-footer flex flex-row flex-end">
-          <button data-restart-wifi-wizard class="waves-effect waves-light btn blue">
-            Start Over
-          </button>
-        </div>
-      {{/if}}
+      {{#each APs}}
+        {{#if isSelectedAP this}}
+          <form id="connect-to-ssid">
+            <div class="photon-ssid-option flex flex-row flex-between z-depth-1">
+              <div>
+                {{#if sec}}
+                  <input id="ssid-pw" type="password" placeholder="WiFi Password" autofocus="true"/>
+                {{else}}
+                  {{ssid}}
+                {{/if}}
+              </div>
+              <div class="flex flex-row">
+                <button data-connect-to-ap type="submit" class="waves-effect waves-light btn blue">Connect  <i class="fa fa-fw fa-chevron-right"></i></button>
+              </div>
+            </div>
+          </form>
+        {{else}}
+          <div class="photon-ssid-option flex flex-row flex-between">
+            <div class="flex flex-row flex-middle">
+              <div>
+                {{ssid}}
+              </div>
+              {{#if sec}}
+                <i class="ssid-security-icon fa fa-fw fa-lock"></i>
+              {{/if}}
+            </div>
+            <div class="dark-grey">
+              ({{convertRSSItoPercent rssi}}%)
+            </div>
+          </div>
+        {{/if}}
+      {{/each}}
     {{/if}}
-  {{/if}}
+  </div>
+</template>
+
+<template name="finished">
+  <h5>
+    The WiFi information has been sent to the Photon.
+  </h5>
+  <div>
+    <ul class="visible-list">
+      <li>
+        If your Photon is running the latest firmware (>= 0.4.5), it will now try to connect.  If your firmware is not up-to-date, it will probably still be in beacon mode, and you must now press "reset".  This is a <a href="">known bug</a> that is already fixed, so keep your firmware up-to-date!
+      </li>
+      <li>
+        The LED should now turn green, and eventually blue.
+      </li>
+      <li>
+        If the LED continues to flash green for a minute or more, it means the password was entered incorrectly.  You can use the button below to restart the process.  (You may have to put the Photon back into beacon mode by holding "mode."  Ideally, this would be handled by application code being fired from some more accessible input like a "setup button" or voice control.)
+      </li>
+      <li>
+        If your machine has not already reverted back to your regular WiFi network, re-connect to it now to get back online.
+      </li>
+      <li>
+        For more on how this browser-based tool works, <a href="https://github.com/msolters/softap-setup-meteor">check the documentation here.</a>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<template name="about">
+  <p class="flow-text">
+    What Is This?
+  </p>
+  <p>
+    This is a client-side JavaScript implementation of the SoftAP setup procedure for the <a href="https://www.particle.io/">Particle Photon</a>.  It uses the <a href="https://github.com/brewnerd/softap-setup-js">amazing browserified SoftAP code</a> by <a href="https://github.com/brewnerd">@brewnerd</a>.  In this example, I used the browserify tool to generate a single JavaScript file that contains all required SoftAP methods, as per <a href="https://github.com/brewnerd/softap-setup-js#running-in-the-browser">@brewnerd's documentation instructions</a>.  Using this file, I can create a <pre class="center">var SAP = new SoftAPSetup();</pre> object, which contains all the necessary methods for connecting, scanning and configuring the Photon's WiFi settings.  For more information, <a href="https://github.com/msolters/softap-setup-meteor">see the repo</a>.
+  </p>
+  <p>
+    <p class="flow-text">
+      SoftAP isn't yet perfect in the browser.
+    </p>
+    <ul class="visible-list">
+      <li>
+        Some browsers (I'm looking at you, Safari) sometimes simply ignore certain SoftAP commands, without breathing an error.
+      </li>
+      <li>
+        More disastrously, when building a web interface some resources may be called on <i>and not be reachable</i> while the user's browser is connected to the Photon's local access point.  This can result in ugly or totally broken behaviour -- missing icons, fonts or functions.
+      </li>
+      <li>
+        Lastly, we still depend on the user to manually toggle between WiFi networks, and to be able to understand and deal with the loss of internet connection that it will bring about.  Have you ever felt the buttery smooth action of Particle's setup app for Android, and how it effortlessly slides between networks?  Personally, I think that should be the user experience across the board.  (I'm looking at you, iOS).
+      </li>
+    </ul>
+  </p>
+  <p>
+    Enter <a href="http://electron.atom.io/">Electron</a>.  (No, not the GSM-based uC from Particle).  By merely adding the <a href="https://atmospherejs.com/arboleya/electrify">arboleya:electrify</a> package to this Meteor app, this entire app can be bundled into a tiny version of Chromium and compiled into an .exe, .app or Linux executable with a single command.  This electrify tool also comes in a super awesome NPM tool!  <a href="https://www.npmjs.com/package/electrify">Check it out.</a>
+  </p>
+  <p>
+    The upshot?
+  </p>
+  <p class="flow-text">
+    Electrifying the app gives you a self-contained native application that is guaranteed to be fully SoftAP compatible, and which will never be disconnected from its resources.
+  </p>
+  <p>
+    That's a solution for #1 and #2.  But what about automating the WiFi switching steps?  How do we "find" nearby Photons from the user's computer?
+  </p>
+  <p>
+    Enter <a href="">wifi-control</a>.
+  </p>
 </template>

@@ -1,6 +1,7 @@
 /* LESS declarations go here */
 
 /*  General Styling, Colour and Spacing */
+@lightGrey: #eee;
 @darkGrey: #aaa;
 
 .container {
@@ -35,8 +36,23 @@
 .dark-grey {
   color: @darkGrey;
 }
+.collapsible-body {
+  padding: 15px;
+}
+.collapsible-header:hover {
+  background-color: @lightGrey;
+}
+.visible-list li {
+  list-style-type: decimal;
+  margin: 5px 5px 5px 20px;
+}
 
 /*  Override Materialize Defaults */
+@media only screen and (max-width: 992px) and (min-width: 601px) {
+  #toast-container {
+    right: 5%;
+  }
+}
 .toast {
   height: auto !important;
   line-height: 1.5em !important;
@@ -53,7 +69,7 @@
 .loading-header {
   margin-left: 20px;
 }
-#ssid-preloader {
+.ssid-loader .preloader-wrapper {
   height: 100px;
   width: 100px;
   margin: 20px;
@@ -64,7 +80,7 @@
   align-items: center;
 }
 #ssid-table .photon-ssid-option:hover {
-  background-color: #eee;
+  background-color: @lightGrey;
 }
 i.ssid-security-icon {
   color: @darkGrey;
@@ -91,6 +107,10 @@ i.ssid-security-icon {
 #ssid-table-header button[data-scan-aps] {
   margin-right: 0;
 }
-.ssid-footer {
+.setup-footer {
   padding-top: 5px;
+}
+.setup-footer .btn {
+    margin-left: 5px;
+    margin-right: 5px;
 }
