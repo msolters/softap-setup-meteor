@@ -1,9 +1,9 @@
 {
-  "name": "Photon SoftAP Setup",
+  "name": "Photon-SoftAP",
   "main": "index.js",
   "devDependencies": {
     "electron-prebuilt": "^0.29.2",
     "electron-packager": "^5.0.1",
-    "electrify": "1.2.1"
+    "electrify": "1.2.2"
   }
 }
