@@ -24,7 +24,7 @@
 
 <template name="browserSetup">
   {{#if setupStepIs 'connectToPhoton'}}
-    <p>
+    <div class="panel-padding">
       <div class="row flow-text">
         To set up your Photon from the browser, first find and connect to a WiFi network that has "Photon-" in it, and then hit next!
       </div>
@@ -52,7 +52,7 @@
           If your Photon is <i>definitely</i> blinking blue but still not showing up in your computer or smart phone's WiFi list, try turning your WiFi off and then on again.
         </div>
       </div>
-    </p>
+    </div>
     <div class="setup-footer flex flex-row flex-end">
       {{#if attemptingToConnectToPhoton}}
         <button data-cancel-setup type="button" class="waves-effect waves-light btn grey">
@@ -66,7 +66,7 @@
         </button>
       {{else}}
         <button data-connect-to-photon type="button" class="waves-effect waves-light btn blue">
-          Next
+          Next <i class="fa fa-fw fa-chevron-right"></i>
         </button>
       {{/if}}
     </div>
@@ -155,27 +155,24 @@
 </template>
 
 <template name="finished">
-  <h5>
-    The WiFi information has been sent to the Photon.
-  </h5>
-  <div>
-    <ul class="visible-list">
-      <li>
-        If your Photon is running the latest firmware (>= 0.4.5), it will now try to connect.  If your firmware is not up-to-date, it will probably still be in beacon mode, and you must now press "reset".  This is a <a href="">known bug</a> that is already fixed, so keep your firmware up-to-date!
-      </li>
-      <li>
-        The LED should now turn green, and eventually blue.
-      </li>
-      <li>
+  <div class="panel-padding">
+    <div class="flow-text row">
+      The WiFi information has been sent to the Photon.
+    </div>
+    <div class="row">
+      The LED should now turn green, and eventually blue.
+    </div>
+    <div class="row">
+      <div class="col s1 center">
+        <i class="fa fa-fw fa-question-circle orange-text small"></i>
+      </div>
+      <div class="col s11">
         If the LED continues to flash green for a minute or more, it means the password was entered incorrectly.  You can use the button below to restart the process.  (You may have to put the Photon back into beacon mode by holding "mode."  Ideally, this would be handled by application code being fired from some more accessible input like a "setup button" or voice control.)
-      </li>
-      <li>
-        If your machine has not already reverted back to your regular WiFi network, re-connect to it now to get back online.
-      </li>
-      <li>
-        For more on how this browser-based tool works, <a href="https://github.com/msolters/softap-setup-meteor">check the documentation here.</a>
-      </li>
-    </ul>
+      </div>
+    </div>
+    <div class="row">
+      If your machine has not already reverted back to your regular WiFi network, re-connect to it now to get back online.  For more on how this browser-based tool works, <a href="https://github.com/msolters/softap-setup-meteor">check the documentation here.</a>
+    </div>
   </div>
 </template>
 

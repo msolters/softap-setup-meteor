@@ -1,13 +1,13 @@
 <template name="nativeSetup">
   {{#if setupStepIs 'connectToPhoton'}}
-    <p>
+    <div class="panel-padding">
       <div class="row flow-text">
         This part of the app is intended to be run if you have downloaded and are running it as a <a href="https://github.com/msolters/softap-setup-meteor/blob/master/README.md#deploy-as-a-stand-alone-application">standalone app</a>.
       </div>
       <div class="row">
         Native WiFi features will <i>not</i> function unless the app is run locally.
       </div>
-    </p>
+    </div>
     <ul class="collection with-header">
       {{#if attemptingToConnectToPhoton}}
         <li class="collection-header">
