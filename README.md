@@ -91,5 +91,28 @@ I am assuming that most people are unfamiliar, so I will lay out the general log
 
 It's most useful to chain these methods, since they behave as callbacks -- for example, I call `SAP.connect()` inside the callback to `SAP.configure`, provided there were no errors.
 
+## Deploy as a Stand Alone Application
+This Meteor application has been designed to be deployed as a stand-alone native application by using [Electron](http://electron.atom.io/) through the [arboleya:electrify](https://atmospherejs.com/arboleya/electrify) package.
+
+The underlying motivation is that this will provide:
+
+*  Automatation of WiFi switching and Photon detection by using the [msolters:wifi-control](https://atmospherejs.com/msolters/wifi-control) package.
+*  Guaranteed compatibility, since Electron is essentially Chromium -- which is tested to work with SoftAP.
+*  Never lose assets or resources, which can occur when web apps lose their connection to the internet whilst connected to the Photon's AP.
+
+To run the application natively:
+
+1.  Make sure you have [Meteor installed](https://www.meteor.com/install).
+1.  Clone this repo, and `cd` into `softap-setup-meteor`.
+2.  Execute `meteor`.
+
+This should automatically launch an Electron shell containing this application (the native app).  In addition, visiting `http://localhost:3000/` in any other browser will work equivalently as a local app.  At the time of this writing, expect some bugs in Windows.
+
+If you see errors associated with Electron or `electrify`, consider manually installing the `electrify` tool inside `softap-setup-meteor/.electrify`:
+
+```sh
+  cd .electrify && npm install
+```
+
 ## Firmware Notes & Gotchas
 The Photon will not automatically *leave* listening mode when the `SAP.connect()` command is issued for firmware < v0.4.4.  This is a [known bug and is fixed](https://github.com/spark/firmware/issues/558) in versions >= 0.4.5.  Press reset to manually trigger the Photon to attempt to connect, and make sure your firmware is the latest version!
