@@ -8,13 +8,13 @@ var window    = null;
 app.on('ready', function() {
 
   window = new browser({
-    width: 1200,
+    width: 800,
     height: 900,
     'node-integration': false
   });
 
   window.setTitle("Photon SoftAP Setup");
-  
+
   electrify.boot(function() {
     window.loadUrl(electrify.meteor_url);
   });
