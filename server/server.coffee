@@ -8,7 +8,6 @@ Meteor.startup ->
 #	open is for opening URLs in the OS's native browser
 #	instead of the Electron window when running natively.
 open = Meteor.npmRequire 'open'
-
 Meteor.methods 'link': (url) ->
   open url
   return

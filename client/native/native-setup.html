@@ -2,10 +2,29 @@
   {{#if setupStepIs 'connectToPhoton'}}
     <div class="panel-padding">
       <div class="row flow-text">
-        This part of the app is intended to be run if you have downloaded and are running it as a <a href="https://github.com/msolters/softap-setup-meteor/blob/master/README.md#deploy-as-a-stand-alone-application">standalone app</a>.
+        This part of the app is intended to be run if you have downloaded and are running it as a local web app, or as a <a href="https://github.com/msolters/softap-setup-meteor/blob/master/README.md#deploy-as-a-stand-alone-application">standalone executable</a>.
       </div>
       <div class="row">
-        Native WiFi features will <i>not</i> function unless the app is run locally.
+        <div class="col s1 center">
+          <i class="fa fa-fw fa-exclamation-circle red-text small"></i>
+        </div>
+        <div class="col s11">
+          Native WiFi features will <i>not</i> function unless the app is run locally.
+        </div>
+      </div>
+      <div class="row">
+        To install this app locally:
+        <ul class="visible-list">
+          <li>
+            <a href="https://www.meteor.com/install">Install Meteor!</a>
+          </li>
+          <li>
+            Clone the source code from <a href="https://github.com/msolters/softap-setup-meteor">the repository</a> to your own computer.
+          </li>
+          <li>
+            <b>cd</b> into the project directory and run: <b>meteor</b>
+          </li>
+        </ul>
       </div>
     </div>
     <ul class="collection with-header">
