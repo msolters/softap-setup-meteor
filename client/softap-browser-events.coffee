@@ -23,7 +23,7 @@ Template.body.events
   # hits Enter after entering the password for an AP from the SSID
   # list.
   #
-  'click button#data-connect-to-ap, submit form#connect-to-ssid': (event, template) ->
+  'click button[data-connect-to-ap], submit form#connect-to-ssid': (event, template) ->
     #
     # (1) Using the currently selected AP, create a configuration object
     #     that the SoftAPSetup library can use to configure the Photon.
