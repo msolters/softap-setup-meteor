@@ -1,5 +1,18 @@
 # softap-setup-meteor
-A Meteor implementation of the Particle Photon SoftAP.
+A Meteor implementation of the Particle Photon SoftAP.  Try it out!
+
+## Install
+
+1.  [Install Meteor](https://www.meteor.com/install).
+2.  Clone this repo!
+3.  `cd ./softap-setup-meteore && meteor`
+
+For MacOS & Linux it can all be done from terminal:
+```bash
+curl https://install.meteor.com/ | sh
+git clone https://github.com/msolters/softap-setup-meteor.git
+cd ./softap-setup-meteor && meteor
+```
 
 ##  How to Implement SoftAP Setup into a Browser
 Incorporating the SoftAP step into the browser is a win-win.  It means the setup procedure is essentially the same for all users, mobile and laptop -- any web browser will work.
