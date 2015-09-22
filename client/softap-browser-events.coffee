@@ -18,6 +18,13 @@ Template.body.events
   'click div.photon-ssid-option': (event, template) ->
     return unless selectedAP.get() isnt @
     selectedAP.set @
+  'click button[data-cancel-setup]': (event, template) ->
+    resetSetup()
+
+Template.body.destroyed = ->
+  delete window.sap if window.sap?
+
+Template.chooseSSID.events
   #
   # Here's the logic that gets called when a user hits "connect" or
   # hits Enter after entering the password for an AP from the SSID
@@ -45,8 +52,3 @@ Template.body.events
     #
     configurePhoton connection_config
     return false
-  'click button[data-cancel-setup]': (event, template) ->
-    resetSetup()
-
-Template.body.destroyed = ->
-  delete window.sap if window.sap?
