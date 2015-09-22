@@ -1,5 +1,4 @@
 {
-  "node-wifiscanner2": "1.1.0",
-  "future": "2.3.1",
-  "open": "0.0.5"
+  "open": "0.0.5",
+  "softap-setup": "https://github.com/msolters/softap-setup-js/archive/73d84fc33808cbbfa170a36082a9b4dd6cd81421.tar.gz"
 }

@@ -5,7 +5,7 @@ A Meteor implementation of the Particle Photon SoftAP.  Try it out!
 
 1.  [Install Meteor](https://www.meteor.com/install).
 2.  Clone this repo!
-3.  `cd ./softap-setup-meteore && meteor`
+3.  `cd ./softap-setup-meteor && meteor`
 
 For MacOS & Linux it can all be done from terminal:
 ```bash

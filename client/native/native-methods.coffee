@@ -19,6 +19,6 @@
   Meteor.call "scanForWiFi", (err, resp) ->
     scanningForPhotons.set false
     if resp.success
-      deviceFilter = new RegExp /Photon-/ # We only want APs that contain "Photon-"
+      deviceFilter = new RegExp /Driblet-/ # We only want APs that contain "Photon-"
       nearbyPhotons.set _.filter resp.networks, (n) ->
         deviceFilter.test n.ssid
