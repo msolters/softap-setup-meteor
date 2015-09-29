@@ -4,7 +4,7 @@
       "version": "0.0.5"
     },
     "softap-setup": {
-      "version": "3.0.0",
+      "version": "3.0.1",
       "dependencies": {
         "nconf": {
           "version": "0.7.2",

@@ -10,12 +10,9 @@ coffeescript
 reactive-var
 materialize:materialize@=0.97.0
 grove:less
-meteorhacks:npm
 
 
-npm-container
 arboleya:electrify
-cosmos:browserify
 standard-minifiers
 meteor-base
 mobile-experience
@@ -31,3 +28,8 @@ ejson
 spacebars
 check
 msolters:wifi-control
+cosmos:browserify
+meteorhacks:npm
+
+
+npm-container
