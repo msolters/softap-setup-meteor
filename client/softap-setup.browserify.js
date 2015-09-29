@@ -1,1 +1,1 @@
-SoftAPSetup = require('softap-setup');
+SoftAPSetup = require("softap-setup");

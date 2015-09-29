@@ -4,7 +4,7 @@
       "version": "0.0.5"
     },
     "softap-setup": {
-      "version": "https://github.com/msolters/softap-setup-js/archive/c530abeb991548652daef44715b647259a3a7a36.tar.gz",
+      "version": "3.0.0",
       "dependencies": {
         "nconf": {
           "version": "0.7.2",
@@ -95,46 +95,6 @@
             },
             "asn1": {
               "version": "0.2.2"
-            }
-          }
-        },
-        "xhr": {
-          "version": "2.1.0",
-          "dependencies": {
-            "global": {
-              "version": "4.3.0",
-              "dependencies": {
-                "min-document": {
-                  "version": "2.17.0",
-                  "dependencies": {
-                    "dom-walk": {
-                      "version": "0.1.1"
-                    }
-                  }
-                },
-                "process": {
-                  "version": "0.5.2"
-                }
-              }
-            },
-            "once": {
-              "version": "1.1.1"
-            },
-            "parse-headers": {
-              "version": "2.0.0",
-              "dependencies": {
-                "for-each": {
-                  "version": "0.3.2",
-                  "dependencies": {
-                    "is-function": {
-                      "version": "1.0.1"
-                    }
-                  }
-                },
-                "trim": {
-                  "version": "0.0.1"
-                }
-              }
             }
           }
         }
