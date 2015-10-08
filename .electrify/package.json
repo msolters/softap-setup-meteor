@@ -1,9 +1,7 @@
 {
-  "name": "Photon-SoftAP",
+  "name": "my-electrified-app",
   "main": "index.js",
-  "devDependencies": {
-    "electron-prebuilt": "^0.29.2",
-    "electron-packager": "^5.0.1",
-    "electrify": "1.2.2"
+  "dependencies": {
+    "electrify": "1.4.0"
   }
 }

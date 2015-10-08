@@ -1,31 +1,1 @@
-var app       = require('app');
-var browser   = require('browser-window');
-var electrify = require('electrify');
-
-
-var window    = null;
-
-app.on('ready', function() {
-
-  window = new browser({
-    width: 800,
-    height: 900,
-    'node-integration': false
-  });
-
-  window.setTitle("Photon SoftAP Setup");
-
-  electrify.boot(function() {
-    window.loadUrl(electrify.meteor_url);
-  });
-
-});
-
-
-app.on('will-quit', function(event) {
-  electrify.shutdown(app, event);
-});
-
-app.on('window-all-closed', function() {
-  app.quit();
-});
+var app       = require('app');var browser   = require('browser-window');var electrify = require('electrify')(__dirname, {});var window    = null;app.on('ready', function() {  electrify.start(function(meteor_root_url) { //~> electrify start    window = new browser({      width: 1200, height: 900,      'node-integration': false               //~> node integration off    });    window.loadUrl(meteor_root_url);  });});app.on('window-all-closed', function() {  app.quit();});app.on('will-quit', function() {  electrify.stop();                           //~> electrify stop});
