@@ -64,14 +64,23 @@
 #
 @retrievePhotonInfo = ->
   console.log "Retrieving device info..."
-  sap.deviceInfo (err, dat) ->
-    if !err
-      if dat.id?
-        console.log "Photon device info retrieved: #{dat}"
-        retrievePhotonKey()
-        return
-    else
-      setPhotonConnectionState.disconnected()
+  attempt = 0
+  getInfoAttempt = ->
+    return unless sap?
+    sap.deviceInfo (err, dat) ->
+      if !err
+        if dat.id?
+          console.log "Photon device info retrieved: #{dat}"
+          retrievePhotonKey()
+          return
+      else
+        if attempt is 5
+          setPhotonConnectionState.disconnected()
+          return
+        else
+          attempt++
+          Meteor.setTimeout getInfoAttempt, 1500
+  getInfoAttempt()
 #
 # retrievePhotonKey:  This method returns the Photon's public key.
 #
