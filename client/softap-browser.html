@@ -32,27 +32,27 @@
       <div class="row flow-text">
         To set up your Photon from the browser, first find and connect to a WiFi network that has "Photon-" in it, and then hit next!
       </div>
-      <div class="row">
-        <div class="col s1 center">
+      <div class="row valign-wrapper">
+        <div class="col s2 m1 center">
           <i class="fa fa-fw fa-question-circle green-text small"></i>
         </div>
-        <div class="col s11">
-          Make sure your Photon is in WiFi setup mode (it will be blinking blue).  If it's not, hold the mode button for a few seconds until it begins to blink blue.
+        <div class="col s10 m11">
+          Make sure your Photon is in WiFi setup mode by holding the mode button for a few seconds until it begins to blink blue.
         </div>
       </div>
-      <div class="row">
-        Look for a WiFi network like this...
+      <div class="row valign-wrapper">
+        <div class="col s2 m1 center">
+          <i class="fa fa-fw fa-wifi blue-text small"></i>
+        </div>
+        <div class="col s10 m11">
+          Connect to a WiFi network named <span class="blue-text z-depth-1">Photon-XXXX</span>.
+        </div>
       </div>
-      <blockquote>
-        <pre>
-          Photon-****
-        </pre>
-      </blockquote>
-      <div class="row">
-        <div class="col s1 center">
+      <div class="row valign-wrapper">
+        <div class="col s2 m1 center">
           <i class="fa fa-fw fa-exclamation-circle red-text small"></i>
         </div>
-        <div class="col s11">
+        <div class="col s10 m11">
           If your Photon is <i>definitely</i> blinking blue but still not showing up in your computer or smart phone's WiFi list, try turning your WiFi off and then on again.
         </div>
       </div>
@@ -65,7 +65,7 @@
         <button class="waves-effect waves-light btn disabled">
           <div class="flex flex-row flex-middle">
             {{> multiColourLoader}}
-            <div>Connecting to Photon...</div>
+            <div>Connecting...</div>
           </div>
         </button>
       {{else}}
@@ -108,7 +108,7 @@
       <div>
         {{#if scanningAPsFromPhoton}}
           <button class="waves-effect waves-light btn disabled">
-            Scanning WiFi Networks...
+            Scanning networks...
           </button>
         {{else}}
           <button data-scan-aps-from-photon class="waves-effect waves-light btn blue">
@@ -125,15 +125,15 @@
       {{#each APs}}
         {{#if isSelectedAP this}}
           <form id="connect-to-ssid">
-            <div class="photon-ssid-option flex flex-row flex-between z-depth-1">
-              <div>
+            <div class="photon-ssid-option row flex z-depth-1">
+              <div class="col s7 m8">
                 {{#if sec}}
                   <input id="ssid-pw" type="password" placeholder="WiFi Password" autofocus="true"/>
                 {{else}}
                   {{ssid}}
                 {{/if}}
               </div>
-              <div class="flex flex-row">
+              <div class="col s5 m4 right-align">
                 <button data-connect-to-ap type="submit" class="waves-effect waves-light btn blue">Connect  <i class="fa fa-fw fa-chevron-right"></i></button>
               </div>
             </div>
@@ -166,11 +166,11 @@
     <div class="row">
       The LED should now turn green, and eventually blue.
     </div>
-    <div class="row">
-      <div class="col s1 center">
+    <div class="row valign-wrapper">
+      <div class="col s2 m1 center">
         <i class="fa fa-fw fa-question-circle orange-text small"></i>
       </div>
-      <div class="col s11">
+      <div class="col s10 m11 ">
         If the LED continues to flash green for a minute or more, it means the password was entered incorrectly.  You can use the button below to restart the process.  (You may have to put the Photon back into beacon mode by holding "mode."  Ideally, this would be handled by application code being fired from some more accessible input like a "setup button" or voice control.)
       </div>
     </div>
