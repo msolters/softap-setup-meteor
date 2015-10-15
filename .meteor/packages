@@ -12,7 +12,6 @@ materialize:materialize@=0.97.0
 grove:less
 
 
-arboleya:electrify
 standard-minifiers
 meteor-base
 mobile-experience
@@ -33,3 +32,4 @@ meteorhacks:npm
 
 
 npm-container
+arboleya:electrify
