@@ -88,13 +88,13 @@
           }
         },
         "node-rsa": {
-          "version": "0.2.25",
+          "version": "0.2.26",
           "dependencies": {
+            "asn1": {
+              "version": "0.2.3"
+            },
             "lodash": {
               "version": "3.3.0"
-            },
-            "asn1": {
-              "version": "0.2.2"
             }
           }
         }

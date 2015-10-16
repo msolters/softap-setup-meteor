@@ -27,9 +27,9 @@ ejson
 spacebars
 check
 msolters:wifi-control
-cosmos:browserify
 meteorhacks:npm
 
 
 npm-container
+cosmos:browserify
 arboleya:electrify
