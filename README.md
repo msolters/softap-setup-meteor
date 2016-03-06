@@ -17,9 +17,7 @@ cd ./softap-setup-meteor && meteor
 ##  How to Implement SoftAP Setup into a Browser
 Incorporating the SoftAP step into the browser is a win-win.  It means the setup procedure is essentially the same for all users, mobile and laptop -- any web browser will work.
 
-All required SoftAP functionality is inside [`client/lib/softap-browser.js`](https://github.com/msolters/softap-setup-meteor/tree/master/client/lib).  (Browserified thanks to the amazing [work of @brewnerd](https://github.com/spark/softap-setup-js/pull/3)).  Everything else apart from that lib file is merely an implementation of the methods it provides using the Meteor framework.
-
-Once the `softap-browser.js` file is included, it allows you to create a SoftAP object as follows:
+All required SoftAP functionality is included straight from the official NPM package.  This allows you to create a SoftAP object in the client as follows:
 
 ```js
   var SAP = new SoftAPSetup();
