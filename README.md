@@ -17,7 +17,7 @@ cd ./softap-setup-meteor && meteor
 ##  How to Implement SoftAP Setup into a Browser
 Incorporating the SoftAP step into the browser is a win-win.  It means the setup procedure is essentially the same for all users, mobile and laptop -- any web browser will work.
 
-All required SoftAP functionality is included straight from the official NPM package.  This allows you to create a SoftAP object in the client as follows:
+All required SoftAP functionality is included straight from the [official NPM package](https://www.npmjs.com/package/softap-setup).  This allows you to create a SoftAP object in the client as follows:
 
 ```js
   var SAP = new SoftAPSetup();
